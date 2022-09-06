@@ -1,5 +1,6 @@
 globals
     rect MAP_RECT = null
+    real UNIT_MOVE_AREA = 120.00
 
     trigger Aizen_Hogyoku_Learn = CreateTrigger()
     trigger Akainu_MagmaFrenzyDmg = CreateTrigger()
@@ -92,6 +93,7 @@ globals
     // Naruto
     player Naruto_Player
     trigger Naruto_KagebunshinLearn
+    integer Naruto_CloneBuff
 
     // Pein
     integer Pein_BuffSoulDrain = 'B00A'

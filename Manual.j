@@ -64,8 +64,8 @@ call IssuePointOrderById(u, 11111, x, y)
 
 // Unit Group
 call GroupAddUnit(whichGroup, whichUnit)
-local group g = CreateGroupXY(x, y, area, p)
-local group g = CreateGroupXY2(x, y, area, p, group2)
+local group g = CreateGroupXY2(x, y, garea, p, gcheck)
+local group g = CreateGroupXY(x, y, garea, p)
 loop
     set picked = FirstOfGroup(g)
     exitwhen (picked == null)
@@ -76,6 +76,10 @@ set g = null
 
 
 // Real
+local real xxx = GetUnitState(whichUnit, UNIT_STATE_LIFE)
+local real xxx = GetUnitState(whichUnit, UNIT_STATE_MANA)
+local real xxx = GetWidgetLife(whichUnit)
+local real xxx = GetUnitStatePercent(whichUnit, UNIT_STATE_LIFE, UNIT_STATE_MAX_LIFE)
 local real dmg = BasicDmg_Q(unit, 'A0EH', bj_HEROSTAT_AGI)
 local real dmg = ((1000.00 + (GetUnitAbilityLevel(self, skId)*5.00)) + (GetHeroAgi(self, false) * 5.00))
 local real xxx = GetUnitFacing(u)
@@ -90,10 +94,7 @@ local real xxx = DistanceBetweenXY(x, y, x, y)
 local real xxx = GetOrderPointX()
 local real xxx = GetOrderPointY()
 local real xxx = GetEventDamage()
-local real xxx = GetUnitState(whichUnit, UNIT_STATE_LIFE)
-local real xxx = GetUnitState(whichUnit, UNIT_STATE_MANA)
-local real xxx = GetWidgetLife(whichUnit)
-local real xxx = GetUnitStatePercent(whichUnit, UNIT_STATE_LIFE, UNIT_STATE_MAX_LIFE)
+
 
 // Integer
 local integer sk = GetLearnedSkill()
@@ -125,10 +126,10 @@ set t = null
 
 // Hash Table
 local hashtable hash = InitHashtable()
-local integer i call LoadInteger(hash, GetHandleId(whichUnit), 0)
+local integer i = LoadInteger(hash, GetHandleId(whichUnit), 0)
 call SaveInteger(hash, missionKey, column, value)
-call FlushParentHashtable(hash)
 call FlushChildHashtable(hash, missionKey)
+call FlushParentHashtable(hash)
 
 // Boolean
 IsTerrainPathable(x, y, PATHING_TYPE_WALKABILITY)
@@ -139,13 +140,14 @@ IsUnitAlly(whichUnit, p)
 IsUnitEnemy(whichUnit, p)
 
 // Effect & Text
-call TerrainDeformationRippleXY( duration, false, x, y, 100.00, 100.00, deep, ratio, 512)
 call DestroyEffect(AddSpecialEffectTarget("XXXXX", self, "origin"))
 call DestroyEffect(AddSpecialEffect("XXXX", x, y))
 call DisplayTimedTextToForce(GetPlayersAll(), 0.01, "1")
+call DisplayText("XXXXXXXXXXX", self, 0.023, true, 255, 255, 255, 255)
 if (IsUnitType(u, UNIT_TYPE_HERO)) then
     call DisplayText(I2S(R2I(dmg)) + "!", picked, 0.027, true, 255, 0, 0, 255)
 endif
+call TerrainDeformationRippleXY( duration, false, x, y, 100.00, 100.00, deep, ratio, 512)
 
 // Sound
 call Dynamic_3D("XXXXXX", x, y)

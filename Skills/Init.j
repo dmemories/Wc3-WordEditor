@@ -9,8 +9,10 @@ function Trig_Init_Actions takes nothing returns nothing
 // -----------------------------------------
 
     set Naruto_Player = GetOwningPlayer(u)
+    set Naruto_CloneBuff = 'B001'
     call TriggerRegisterUnitEvent(Naruto_KagebunshinLearn, u, EVENT_UNIT_HERO_SKILL)
     call TriggerRegisterUnitEvent(gg_trg_Kage_Bunshin, u, EVENT_UNIT_SPELL_EFFECT)
+    call TriggerRegisterUnitEvent(gg_trg_Jiton_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
     /* set Zabuza_BashSk = 'A003'
     set Zabuza_CleavingSk = 'A004'
     set Zabuza_CriticalSk = 'A001'

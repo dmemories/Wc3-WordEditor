@@ -1,4 +1,17 @@
 //==========================================================================
+// SetEnabledAttack         Lastest (03/09/22)
+//==========================================================================
+
+function SetEnabledAttack takes unit whichUnit, boolean attackable returns nothing
+    if (attackable) then
+        call UnitRemoveAbility(whichUnit, 'Abun')
+    else
+        call UnitAddAbility(whichUnit, 'Abun')
+    endif
+endfunction
+
+
+//==========================================================================
 // CreateGroupAllyXY         Lastest (12/12/21)
 //==========================================================================
 
