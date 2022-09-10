@@ -240,6 +240,7 @@ scope JitonRasengan initializer Init
                                     set picked = FirstOfGroup(g)
                                     exitwhen (picked == null)
                                     call GroupRemoveUnit(g, picked)
+                                    call UnitApplyTimedLife(CreateUnit(Naruto_Player, 'h00E', GetUnitX(picked), GetUnitY(picked), facing), 1112820806, 0.70)
                                     call UnitDamageTarget(caster[n], picked, dmg, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
                                 endloop
                                 call DestroyGroup(g)

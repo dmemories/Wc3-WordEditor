@@ -229,6 +229,25 @@ scope KageBunshin initializer Init
         set summonTrg = null
     endfunction
 
+    private function LevelUpAct takes nothing returns nothing
+        local unit self = GetTriggerUnit()
+        local integer currLevel = GetHeroLevel(self)
+        local group g = CreateGroup()
+        local unit picked
+
+        call GroupEnumUnitsOfPlayer(g, GetOwningPlayer(self), null)
+        loop
+            set picked = FirstOfGroup(g)
+            exitwhen (picked == null)
+            call GroupRemoveUnit(g, picked)
+            if (GetUnitAbilityLevel(picked, Naruto_CloneBuff) > 0) then
+                call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl", picked, "origin"))
+            endif
+        endloop
+        call DestroyGroup(g)
+        set g = null
+        set self = null
+    endfunction
 
 // =======================================================================================
     private function Init takes nothing returns nothing
@@ -239,6 +258,9 @@ scope KageBunshin initializer Init
         set Naruto_KagebunshinLearn = CreateTrigger()
         call TriggerAddCondition(Naruto_KagebunshinLearn, Condition(function LearnCond))
         call TriggerAddAction(Naruto_KagebunshinLearn, function LearnAct)
+
+        set Naruto_KagebunshinLvlUp = CreateTrigger()
+        call TriggerAddAction(Naruto_KagebunshinLvlUp, function LevelUpAct)
     endfunction
 
 endscope

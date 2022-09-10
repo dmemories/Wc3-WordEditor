@@ -4,55 +4,54 @@ function TestRun takes nothing returns nothing
     local real array x
     local real array y
     local group g
-    local unit mySelf
-    local unit myTarget
+    local unit self
+    local unit target
     local unit dummy
     local player p
     local integer skWindWalk = 'AOwk'
     local integer skStormBolt = 'ANsb'
-    local integer i
+    local integer skWarStomp = 'AOws'
+    local integer i = 0
+    local integer rand = GetRandomInt(0, 3)
 
     call Echo("Test")
     set g = GetUnitsOfPlayerAll(Player(0))
-    set mySelf = FirstOfGroup(g)
+    loop
+        set self = FirstOfGroup(g)
+        set i = i + 1
+        exitwhen (i == rand) or (self == null)
+        call GroupRemoveUnit(g, self)
+    endloop
+  // set self = FirstOfGroup(g)
     call DestroyGroup(g)
     set g = null
+
     set g = GetUnitsOfPlayerAll(Player(1))
-    set myTarget = FirstOfGroup(g)
+    loop
+        set target = FirstOfGroup(g)
+        exitwhen (IsUnitType(target, UNIT_TYPE_HERO)) or (target == null)
+        call GroupRemoveUnit(g, target)
+    endloop
     call DestroyGroup(g)
     set g = null
-    set x[0] = GetUnitX(mySelf)
-    set y[0] = GetUnitY(mySelf)
-    set x[1] = GetUnitX(myTarget)
-    set y[1] = GetUnitY(myTarget)
+    call Log(GetUnitName(target))
+    set x[0] = GetUnitX(self)
+    set y[0] = GetUnitY(self)
+    set x[1] = GetUnitX(target)
+    set y[1] = GetUnitY(target)
 
 
-    //call IssuePointOrderById(myTarget, 852592, GetUnitX(mySelf), GetUnitY(mySelf))
-    //call IssueImmediateOrderById(myTarget, 852526)
-    //call IssuemyTargetOrderById(myTarget, 852230, mySelf)
-    //call IssueImmediateOrder(myTarget, "mirrorimage")
-    call IssueImmediateOrder(mySelf, "windwalk")
-    if (GetUnitAbilityLevel(mySelf, Zabuza_WWBuff) > 0) then
-        loop
-            call TriggerSleepAction(0.01)
-            if (GetUnitState(myTarget, UNIT_STATE_LIFE) < 1) then
-                set myTarget = GetUnitNearestXY(GetUnitX(mySelf), GetUnitY(mySelf), 300.00, GetOwningPlayer(mySelf))
-            endif
-            if (myTarget != null) then
-                call Echo(GetUnitName(mySelf) + " -> " + GetUnitName(myTarget))
-                call IssueTargetOrder(mySelf, "attack", myTarget)
-            endif
-            exitwhen (GetUnitAbilityLevel(mySelf, Zabuza_WWBuff) < 1)
-        endloop
-    elseif (IsUnitType(myTarget, UNIT_TYPE_HERO)) then
-        call IssueTargetOrder(mySelf, "channel", myTarget)
-        call IssueImmediateOrder(mySelf, "roar")
-        call IssueImmediateOrder(mySelf, "battleroar")
-        call IssueImmediateOrderById(mySelf, 852478)
-    endif
-
-    set mySelf = null
-    set myTarget = null
+    //call IssuePointOrderById(target, 852592, GetUnitX(self), GetUnitY(self))
+    //call IssueImmediateOrderById(target, 852526)
+    //call IssuetargetOrderById(target, 852230, self)
+    //call IssueTargetOrder(target, "stomp", self)
+    //call IssueImmediateOrder(target, "mirrorimage")
+    //call IssueImmediateOrder(target, "windwalk")
+    call UnitAddAbility(target, skStormBolt)
+    call IssueTargetOrder(target, "thunderbolt", self)
+    //call IssueImmediateOrder(target, "stomp")
+    set self = null
+    set target = null
 endfunction
 
 //===========================================================================

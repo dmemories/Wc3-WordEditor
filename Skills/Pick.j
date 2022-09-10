@@ -2,7 +2,9 @@
 //TESH.alwaysfold=0
 
 function Ability_AddEvent takes unit u, integer i returns nothing
-    if(i==0) then
+    local trigger trg
+
+    if (i == 0) then
         set Ichigo_Hash = InitHashtable()
         call TriggerRegisterPlayerUnitEvent(gg_trg_Getsuga_Tenshou, GetOwningPlayer(u), EVENT_PLAYER_UNIT_SPELL_EFFECT, null)
         call TriggerRegisterPlayerUnitEvent(gg_trg_White_Getsuga_Tenshou, GetOwningPlayer(u), EVENT_PLAYER_UNIT_SPELL_EFFECT, null)
@@ -11,7 +13,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Fgt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Black_Moon_Slash, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Gran_Getsuga_Cero, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==1) then
+    elseif (i == 1) then
         call TriggerRegisterUnitEvent(gg_trg_Gat, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Gomu_Rocket, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Gomu_Bazooka, u, EVENT_UNIT_SPELL_EFFECT)
@@ -19,7 +21,12 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Gear4, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Rdw, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kkg, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==2) then
+    elseif (i == 2) then
+        set trg = CreateTrigger()
+        call TriggerAddAction(trg, function JitonRasengan_LevelUpAct)
+        call TriggerRegisterUnitEvent(trg, u, EVENT_UNIT_HERO_LEVEL)
+        set trg = null
+
         set Naruto_RikenHash = InitHashtable()
         call TriggerRegisterUnitEvent(gg_trg_Lrs, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Jiton_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
@@ -27,21 +34,21 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Kage_Bushin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Biju_Rasenshuriken, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Cbr, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==3) then
+    elseif (i == 3) then
         set Rukia_BankaiHash = InitHashtable()
         call TriggerRegisterUnitEvent(gg_trg_Trs, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Smt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hkr, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_WhiteSword, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_HakkanoTogame, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==4) then
+    elseif (i == 4) then
         call TriggerRegisterUnitEvent(gg_trg_Ssn, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Ykd, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Sph, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Csp, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tmk, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Sds, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==5) then
+    elseif (i == 5) then
         call UnitMakeAbilityPermanent(u, true, Sasuke_skUpgrade)
         call SetAbilityAvailable(Sasuke_skUpgrade, false)
         call UnitMakeAbilityPermanent(u, true, 'A0IY')
@@ -66,33 +73,33 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Sasuke_Amaterasu, u, EVENT_UNIT_SPELL_EFFECT)
         call UnitAddAbility(u, 'A0IW')
         call UnitAddAbility(u, 'A05V')
-    elseif(i==6) then
+    elseif (i == 6) then
         call TriggerRegisterUnitEvent(gg_trg_Osg, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Dsf_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_BrazoDiablo, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Ets, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tdh, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==7) then
+    elseif (i == 7) then
         call TriggerRegisterUnitEvent(gg_trg_Mto, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lrt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tbt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Scs, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tlt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_TltR, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==8) then
+    elseif (i == 8) then
         call TriggerRegisterUnitEvent(gg_trg_Rkb, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lib, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kml, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lie, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kakashi_KamuiStrike, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tls, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==9) then
+    elseif (i == 9) then
         call TriggerRegisterUnitEvent(gg_trg_Mts, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lrg, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Sda, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Sgr, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Qff, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==10) then
+    elseif (i == 10) then
         call TriggerRegisterUnitEvent(gg_trg_Dial, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tjr, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Stf_Init, u, EVENT_UNIT_HERO_SKILL)
@@ -100,7 +107,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Seg, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Abe, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Ipf, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==11) then
+    elseif (i == 11) then
         call SetAbilityAvailable('A07M', false)
         call TriggerRegisterUnitEvent(gg_trg_Gef, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Eth, u, EVENT_UNIT_SPELL_EFFECT)
@@ -109,7 +116,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_BkgC, u, EVENT_UNIT_DEATH)
         call TriggerRegisterUnitEvent(gg_trg_Hns, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Etp, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==12) then
+    elseif (i == 12) then
         call SetAbilityAvailable('A0EF', false)
         call TriggerRegisterUnitEvent(gg_trg_Tcb, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Srl, u, EVENT_UNIT_SPELL_EFFECT)
@@ -117,14 +124,14 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(Byakuya_Gokei, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Anl, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Wes, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==13) then
+    elseif (i == 13) then
         call TriggerRegisterUnitEvent(gg_trg_Endurance, u, EVENT_UNIT_HERO_LEVEL)
         call TriggerRegisterUnitEvent(gg_trg_Nrt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Grc_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Kin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Isk, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_IskD, u, EVENT_UNIT_DEATH)
-    elseif(i==14) then
+    elseif (i == 14) then
         call UnitRemoveAbility(u, 'A0J6') // Rinbo Ghost
         // Eyes Init
         call SetAbilityAvailable('A0KR', false) // SixPath Book
@@ -150,7 +157,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Rinbo, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Mti, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tengai_Shinsei, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==15) then
+    elseif (i == 15) then
         call SetAbilityAvailable('A0K8', false)
         call SetAbilityAvailable('A0KB', false)
         call UnitRemoveAbility(u, 'A0K4')
@@ -161,14 +168,14 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Kyokya_Suigetsu, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Mirage_Strike, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Khg, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==16) then
+    elseif (i == 16) then
         call TriggerRegisterUnitEvent(gg_trg_Fire_Skin, u, EVENT_UNIT_ATTACKED)
         call TriggerRegisterUnitEvent(gg_trg_Hik, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Fire_Shield, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hibashira, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hdb, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Eti, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==17) then
+    elseif (i == 17) then
         call UnitMakeAbilityPermanent(u, true, 'A09P')
         call UnitMakeAbilityPermanent(u, true, 'A0J9')
         call SetAbilityAvailable('A09P', false)
@@ -181,7 +188,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Iss_Anim, u, EVENT_UNIT_SPELL_ENDCAST)
         call TriggerRegisterUnitEvent(gg_trg_Hii, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tsukuyomi, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==18) then
+    elseif (i == 18) then
         call TriggerRegisterUnitEvent(gg_trg_Hnm, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Inv, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Inv2, u, EVENT_UNIT_SPELL_EFFECT)
@@ -189,7 +196,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Daiguren, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Dhf, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hho, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==19) then
+    elseif (i == 19) then
         call TriggerRegisterUnitEvent(gg_trg_Sand_Skin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Dsd, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Csd, u, EVENT_UNIT_SPELL_EFFECT)
@@ -197,7 +204,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Gse, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Sad, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Coe, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==20) then
+    elseif (i == 20) then
         call TriggerRegisterUnitEvent(gg_trg_Shinra_Tensei, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Bansho_Tein, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Ukojizai, u, EVENT_UNIT_SPELL_EFFECT)
@@ -230,12 +237,12 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         set Pein_SixPathSk[6] = 'A0M2'
         set Pein_ShinraTenseiDeathGroup = CreateGroup()
         call TriggerRegisterUnitEvent(gg_trg_SixPath_Ability, u, EVENT_UNIT_HERO_SKILL)
-    elseif(i==21) then
+    elseif (i == 21) then
         call TriggerRegisterUnitEvent(gg_trg_Thrilling_Spiritual, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Czj, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Release_Eye, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kds, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==22) then
+    elseif (i == 22) then
         call TriggerRegisterUnitEvent(gg_trg_Jog, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tmt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Vri_Cast, u, EVENT_UNIT_SPELL_EFFECT)
@@ -244,47 +251,47 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Mmg, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(udg_Mmg_TrigDie, u, EVENT_UNIT_DEATH)
         call TriggerRegisterUnitEvent(gg_trg_Rgo, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==23) then
+    elseif (i == 23) then
         call TriggerRegisterUnitEvent(gg_trg_C1, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_C1_Bomb, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_C12, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_C3, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_C4, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_C0, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==24) then
+    elseif (i == 24) then
         call TriggerRegisterUnitEvent(gg_trg_Fsw, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lot_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Lot, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Cin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kjd, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==25) then
+    elseif (i == 25) then
         call TriggerRegisterUnitEvent(gg_trg_Ovp, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Bst, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hws, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Wof, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Bwt, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==26) then
+    elseif (i == 26) then
         call TriggerRegisterUnitEvent(gg_trg_Immortaility, u, EVENT_UNIT_HERO_LEVEL)
         call TriggerRegisterUnitEvent(gg_trg_Straving_Strike, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Scythe_Hook, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Curse_Jutsu, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Crazy_Slash, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Stab_The_Heart, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==27) then
+    elseif (i == 27) then
         call TriggerRegisterUnitEvent(gg_trg_White_Getsuga, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Getsuga_Strike, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Btz_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Btz, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hsm, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Evil_Moon_Slash, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==28) then
+    elseif (i == 28) then
         call TriggerRegisterUnitEvent(gg_trg_Ptk_Cast, u, EVENT_UNIT_SPELL_CAST)
         call TriggerRegisterUnitEvent(gg_trg_Ptk, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Veal_Shot, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Diable_Jambe, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Csh, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lsh, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==29) then
+    elseif (i == 29) then
         set Zabuza_WWBuff = 'B02T'
         set Zabuza_BashSk = 'A0CF'
         set Zabuza_CleavingSk = 'A0CG'
@@ -303,14 +310,14 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Demon_Power, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(Zabuza_DaibakufuCast, u, EVENT_UNIT_SPELL_CHANNEL)
         call TriggerRegisterUnitEvent(gg_trg_Daibakufu, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==30) then
+    elseif (i == 30) then
         call TriggerRegisterUnitEvent(gg_trg_Flb, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Flw, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Flash_Strike, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Shunko_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Shunko, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Flo, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==31) then
+    elseif (i == 31) then
         set Lucci_geppoStack = 0
         call TriggerRegisterUnitEvent(gg_trg_Rankyaku, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Shigan, u, EVENT_UNIT_SPELL_EFFECT)
@@ -320,7 +327,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Beast_Form, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Geppo, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Rokuogan, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==32) then
+    elseif (i == 32) then
         call TriggerRegisterUnitEvent(gg_trg_TimeSpace, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kot, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kamui_Strike_Learn, u, EVENT_UNIT_HERO_SKILL)
@@ -328,13 +335,13 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Switch_Body_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Switch_Body, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Izanagi_Init, u, EVENT_UNIT_HERO_SKILL)
-    elseif(i==33) then
+    elseif (i == 33) then
         call TriggerRegisterUnitEvent(gg_trg_Cero, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Rapid_Shot_Learn, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Shs, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Iah, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(udg_Wlv_Trigger[0], u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==34) then
+    elseif (i == 34) then
         call SetAbilityAvailable('A0DZ', false)
         call TriggerRegisterUnitEvent(gg_trg_Mgh, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Ing, u, EVENT_UNIT_SPELL_EFFECT)
@@ -342,7 +349,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(Akainu_MagmaFrenzyDmg, u, EVENT_UNIT_DAMAGED)
         call TriggerRegisterUnitEvent(gg_trg_Ryu, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Mgo, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==35) then
+    elseif (i == 35) then
         set Hashirama_RashomonTable = InitHashtable()
         call UnitAddAbility(u, 'A0LB')
         call UnitMakeAbilityPermanent(u, true, 'A0LB')
@@ -358,21 +365,21 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(Hashirama_MokujinDie, u, EVENT_UNIT_DEATH)
         call TriggerRegisterUnitEvent(gg_trg_Mokujin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_ShinSusenju, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==36) then
+    elseif (i == 36) then
         call TriggerRegisterUnitEvent(gg_trg_Memory_Erasing, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Cero, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Hoq, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Urs_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Urs, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Lance_of_Lightning, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==37) then
+    elseif (i == 37) then
         call TriggerRegisterUnitEvent(gg_trg_Lsc, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Light_Regeneration, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Eight_Span_Mirror, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Ama_no_Murakumo, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(Kizaru_Ama_no_MurakumoD, u, EVENT_UNIT_DEATH)
         call TriggerRegisterUnitEvent(gg_trg_Cje, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==38) then
+    elseif (i == 38) then
         call TriggerRegisterUnitEvent(gg_trg_Waveform, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterAnyUnitEventBJ(gg_trg_Suidanha, EVENT_PLAYER_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(Tobirama_SuiryudanLearn, u, EVENT_UNIT_HERO_SKILL)
@@ -381,21 +388,21 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Suijinheki, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Suishoha, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kokuangyo, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==39) then
+    elseif (i == 39) then
         call TriggerRegisterUnitEvent(gg_trg_Cpt, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Cero, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_BerserkerBlood_Learn, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Grimmjow_Res_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Grimmjow_Res, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Pkc, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==40) then
+    elseif (i == 40) then
         call SetAbilityAvailable('A0FQ', false)
         call TriggerRegisterUnitEvent(gg_trg_GravityBlade_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Gravity_Slam, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Gvs, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Meteor_Storm, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Fgr, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==41) then
+    elseif (i == 41) then
         set udg_Tnh_Hash = InitHashtable()
         set udg_Tnh_Max = 18
         set udg_Tnh_Per = 0.08
@@ -407,7 +414,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Aoi_Learn, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Aoi, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Tso, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==42) then
+    elseif (i == 42) then
         set udg_Ikkaku_UpgradeSk = 'A0HA'
         set udg_CounterSpin_Ability[0] = 'A0H5'
         set udg_CounterSpin_Ability[1] = 'A0H7'
@@ -421,7 +428,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Ikkaku_Bankai_Init, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Dragon_Charge, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Fnm, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==43) then
+    elseif (i == 43) then
         call SetAbilityAvailable('A0HT', false)
         call TriggerRegisterUnitEvent(gg_trg_FrostCounter, u, EVENT_UNIT_SPELL_EFFECT)
         call DisableTrigger( Aokiji_FrostCounterDmg)
@@ -431,7 +438,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Ice_Time, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Partisan, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_IceAge, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==44) then
+    elseif (i == 44) then
         call TriggerRegisterUnitEvent(gg_trg_Flying_Thunder_God, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(Minato_FlyingThunderGodB, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Flying_Raijin_Slash, u, EVENT_UNIT_SPELL_EFFECT)
@@ -439,7 +446,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_NineTails_Mode, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Rinbuko_Sanshiki, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Flying_Raijin_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==45) then
+    elseif (i == 45) then
         call UnitMakeAbilityPermanent(u, true, 'A0I2')
         set Soifon_AtkedHash = InitHashtable()
         call TriggerRegisterUnitEvent(Soifon_SuzumebachiLearn, u, EVENT_UNIT_HERO_SKILL)
@@ -448,7 +455,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Soifon_Shunkou, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Soifon_ShunkouD, u, EVENT_UNIT_DEATH)
         call TriggerRegisterUnitEvent(gg_trg_Jakuho_Raikoben, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==46) then
+    elseif (i == 46) then
         set Joker_TamaitoHash = InitHashtable()
         set Joker_SoraHash = InitHashtable()
         set Joker_SoraCDHash = InitHashtable()
@@ -457,7 +464,7 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Black_Knight, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Sora_no_Michi, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_God_Thread, u, EVENT_UNIT_SPELL_EFFECT)
-    elseif(i==47) then
+    elseif (i == 47) then
         call SetAbilityAvailable('A0JN', false)
         call SetAbilityAvailable('A0JW', false)
         call TriggerRegisterUnitEvent(gg_trg_Bushogoma, u, EVENT_UNIT_SPELL_EFFECT)
@@ -493,7 +500,7 @@ function Trig_Pick_Actions takes nothing returns nothing
     local location Player_Loc
     local integer Player_Loop = 0
 
-    if(udg_Player_Random[Player_Number]) then
+    if (udg_Player_Random[Player_Number]) then
         loop
             exitwhen Player_Loop > 11
             call SetPlayerUnitAvailableBJ( Player_Type, false, Player(Player_Loop))
@@ -505,9 +512,9 @@ function Trig_Pick_Actions takes nothing returns nothing
     loop
         exitwhen Player_Loop > udg_Player_MaxHeroes
         call SetPlayerUnitAvailableBJ( udg_Player_HeroType[Player_Loop], false, Player_Unit)
-        if(udg_Player_DummyType[Player_Loop] == Player_Type) then
+        if (udg_Player_DummyType[Player_Loop] == Player_Type) then
             set udg_Player_HeroType[Player_Loop] = 0
-            if(PlayerRaceCheck(Player_Race)) then
+            if (PlayerRaceCheck(Player_Race)) then
                 call MultiboardSetItemIconBJ( udg_Board, 1, (Player_Number+3), udg_Player_Icon[Player_Loop])
             else
                 call MultiboardSetItemIconBJ( udg_Board, 1, (Player_Number+5), udg_Player_Icon[Player_Loop])
@@ -522,7 +529,7 @@ function Trig_Pick_Actions takes nothing returns nothing
     else
         set Player_Rect = Rect(5472, -800, 6176, -192)
     endif
-    if( Pick_Unit != null ) then
+    if ( Pick_Unit != null ) then
         set Player_Loc = GetRandomLocInRect(Player_Rect)
         call SetUnitPositionLoc( Pick_Unit, Player_Loc)
         call PanCameraToTimedLocForPlayer( Player_Unit, Player_Loc, 0)
@@ -532,10 +539,10 @@ function Trig_Pick_Actions takes nothing returns nothing
     endif
     call RemoveRect(Player_Rect)
     set Player_Rect = null
-    
-    if(udg_Player_Random[Player_Number] == false) then
+
+    if (udg_Player_Random[Player_Number] == false) then
         call Force_Display(udg_Display_Time, ( udg_Player_Color[Player_Number] + ( GetPlayerName(Player_Unit) + ( "|r has randomed " + GetUnitName(Pick_Unit) ) ) ))
-    elseif(udg_Player_Repick[Player_Number] == false and udg_Player_Selected[Player_Number]) then
+    elseif (udg_Player_Repick[Player_Number] == false and udg_Player_Selected[Player_Number]) then
        call Force_Display(udg_Display_Time, ( udg_Player_Color[Player_Number] + ( GetPlayerName(Player_Unit) + ( "|r has repicked " + GetUnitName(Pick_Unit) ) ) ))
     else
         call Force_Display(udg_Display_Time, ( udg_Player_Color[Player_Number] + ( GetPlayerName(Player_Unit) + ( "|r has selected " + GetUnitName(Pick_Unit) ) ) ))
@@ -543,8 +550,8 @@ function Trig_Pick_Actions takes nothing returns nothing
         set udg_Player_Random[Player_Number] = false
     endif
 
-    if(GetPlayerController(Player(Player_Number)) == MAP_CONTROL_COMPUTER) then
-        if(Player_Number < 6) then
+    if (GetPlayerController(Player(Player_Number)) == MAP_CONTROL_COMPUTER) then
+        if (Player_Number < 6) then
             call GroupAddUnitSimple( Pick_Unit, udg_AI_Team1)
         else
             call GroupAddUnitSimple( Pick_Unit, udg_AI_Team2)
@@ -556,7 +563,6 @@ function Trig_Pick_Actions takes nothing returns nothing
 
     // Revive Relation
     call TriggerRegisterUnitEvent(gg_trg_Revive, Pick_Unit, EVENT_UNIT_DEATH )
-
 
     // Skillpoint Relation
     call TriggerRegisterUnitEvent(gg_trg_Skill_Point_Manage, Pick_Unit, EVENT_UNIT_HERO_LEVEL )

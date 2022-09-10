@@ -93,6 +93,7 @@ globals
     // Naruto
     player Naruto_Player
     trigger Naruto_KagebunshinLearn
+    trigger Naruto_KagebunshinLvlUp
     integer Naruto_CloneBuff
 
     // Pein
