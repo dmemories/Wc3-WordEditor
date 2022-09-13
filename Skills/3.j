@@ -2,46 +2,43 @@ scope BaryonChakra initializer Init
 
     globals
         private constant integer skId = 'A005'
-        private string effPath = null
         private unit self
         private real skillDur
         private real garea
-        private real blockRate
         private real healRate
-        private group gcheck
-        private integer buffStack
-        private integer effectKey
-        private integer dmgTrgKey
-        private integer dmgTrgIndex
-        private integer dmgTrgCondIndex
-        private hashtable hash
+        private unit array buffUnits
+        private integer buffIndex
+        private integer speedSk
+        private integer speedBuff = 0
     endglobals
 
     private function InitSkill takes nothing returns nothing
-        set effPath = "war3mapImported\\BijuuAura2.mdl"
         set garea = 600.00
-        set hash = InitHashtable()
-        set effectKey = 1
-        set dmgTrgKey = 2
-        set dmgTrgIndex = 0
-        set dmgTrgCondIndex = 1
-        set blockRate = 0.40
-        set healRate = 0.04
+        set healRate = 0.06
+        set speedSk = 'A007'
+        set speedBuff = 'B003'
     endfunction
 
-    private function DmgTrgCond takes nothing returns boolean
-        call BlockDamageAct(GetTriggerUnit(), (GetEventDamage() * blockRate))
+    private function IsUnitInArray takes unit u returns boolean
+        local integer i = buffIndex
+        loop
+            exitwhen (i < 1)
+            set i = i - 1
+            if (buffUnits[i] == u) then
+                return true
+            endif
+        endloop
         return false
     endfunction
 
     private function ActL takes nothing returns nothing
         local timer t = GetExpiredTimer()
-        local trigger dmgTrg = LoadTriggerHandle(hash, dmgTrgKey, dmgTrgIndex)
         local real x
         local real y
         local real hp
         local unit picked
         local group g
+        local integer i
 
         if (GetUnitState(self, UNIT_STATE_LIFE) > 0) and (skillDur > 0) then
             set skillDur = skillDur - 1
@@ -53,74 +50,58 @@ scope BaryonChakra initializer Init
                 set picked = FirstOfGroup(g)
                 exitwhen (picked == null)
                 call GroupRemoveUnit(g, picked)
-                if (IsUnitAlly(picked, Naruto_Player)) and (GetUnitState(picked, UNIT_STATE_LIFE) > 0) and (IsUnitType(picked, UNIT_TYPE_MECHANICAL) == false) and (IsUnitInGroup(picked, gcheck) == false) then
-                    call GroupAddUnit(gcheck, picked)
-                    call SaveEffectHandle(hash, effectKey, buffStack, AddSpecialEffectTarget(effPath, picked, "origin"))
-                    call TriggerRegisterUnitEvent(dmgTrg, picked, EVENT_UNIT_DAMAGED)
-                    set buffStack = buffStack + 1
+                if (GetUnitState(picked, UNIT_STATE_LIFE) > 0) and (IsUnitAlly(picked, Naruto_Player)) and (IsUnitType(picked, UNIT_TYPE_MECHANICAL) == false) and (GetUnitAbilityLevel(picked, speedBuff) < 1) then
+                    if (IsUnitInArray(picked) == false) then
+                        set buffUnits[buffIndex] = picked
+                        set buffIndex = buffIndex + 1
+                    endif
+                    set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'u003', x, y, bj_UNIT_FACING)
+                    call UnitAddAbility(bj_lastCreatedUnit, speedSk)
+                    call IssueTargetOrder(bj_lastCreatedUnit, "bloodlust", picked)
+                    call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.00)
                 endif
             endloop
             call DestroyGroup(g)
             set g = null
 
             if (ModuloInteger(R2I(skillDur), 4) == 0) then
-                set g = CreateGroup()
-                call GroupAddGroup(gcheck, g)
+                set i = buffIndex
                 loop
-                    set picked = FirstOfGroup(g)
-                    exitwhen (picked == null)
-                    call GroupRemoveUnit(g, picked)
-                    set hp = GetUnitState(picked, UNIT_STATE_LIFE)
-                    if (hp > 0) and (IsUnitHidden(picked) == false) then
-                        call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl", picked, "origin"))
-                        call SetUnitState(picked, UNIT_STATE_LIFE, hp + (GetUnitState(picked, UNIT_STATE_MAX_LIFE) * healRate))
+                    exitwhen (i < 1)
+                    set i = i - 1
+                    set hp = GetUnitState(buffUnits[i], UNIT_STATE_LIFE)
+                    if (hp > 0) and (GetUnitAbilityLevel(buffUnits[i], speedBuff) > 0) and (IsUnitHidden(buffUnits[i]) == false) then
+                        call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\HolyBolt\\HolyBoltSpecialArt.mdl", buffUnits[i], "origin"))
+                        call SetUnitState(buffUnits[i], UNIT_STATE_LIFE, hp + (GetUnitState(buffUnits[i], UNIT_STATE_MAX_LIFE) * healRate))
                     endif
                 endloop
-                call DestroyGroup(g)
-                set g = null
             endif
         else
             call PauseTimer(t)
             call DestroyTimer(t)
-            call DestroyGroup(gcheck)
-            set gcheck = null
-
-            call TriggerRemoveCondition(dmgTrg, LoadTriggerConditionHandle(hash, dmgTrgKey, dmgTrgCondIndex))
-            call DestroyTrigger(dmgTrg)
+            set self = null
 
             loop
-                exitwhen (buffStack == 0)
-                set buffStack = buffStack - 1
-                call DestroyEffect(LoadEffectHandle(hash, effectKey, buffStack))
+                exitwhen (buffIndex < 1)
+                set buffIndex = buffIndex - 1
+                if (GetUnitState(buffUnits[buffIndex], UNIT_STATE_LIFE) > 0) then
+                    call UnitRemoveAbility(buffUnits[buffIndex], speedBuff)
+                endif
             endloop
-            set self = null
         endif
         set t = null
-        set dmgTrg = null
     endfunction
 
     private function Act takes nothing returns nothing
-        local timer t
-        local integer tId
-        local trigger dmgTrg
-
         set self = GetTriggerUnit()
-        if (effPath == null) then
+        if (speedBuff == 0) then
             call InitSkill()
         endif
 
-        set dmgTrg = CreateTrigger()
-        call SaveTriggerConditionHandle(hash, dmgTrgKey, dmgTrgCondIndex, TriggerAddCondition(dmgTrg, Condition(function DmgTrgCond)))
-        call SaveTriggerHandle(hash, dmgTrgKey, dmgTrgIndex, dmgTrg)
-        set dmgTrg = null
-
-        call SoundPatch_Spell(udg_soundPatch_Naruto + "\\Naruto\\BaryonChakra.wav.wav", GetUnitX(self), GetUnitY(self))
-        set buffStack = 0
+        call SoundPatch_Spell(udg_soundPatch_Naruto + "\\Naruto\\BaryonChakra.wav", GetUnitX(self), GetUnitY(self))
         set skillDur = (7 + GetUnitAbilityLevel(self, skId)) * 4
-        set gcheck = CreateGroup()
-        set t = CreateTimer()
-        set tId = GetHandleId(t)
-        call TimerStart(t, 0.25, true, function ActL)
+        set buffIndex = 0
+        call TimerStart(CreateTimer(), 0.25, true, function ActL)
     endfunction
 
     private function Cond takes nothing returns boolean
