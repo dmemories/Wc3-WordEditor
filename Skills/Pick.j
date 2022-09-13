@@ -2,8 +2,6 @@
 //TESH.alwaysfold=0
 
 function Ability_AddEvent takes unit u, integer i returns nothing
-    local trigger trg
-
     if (i == 0) then
         set Ichigo_Hash = InitHashtable()
         call TriggerRegisterPlayerUnitEvent(gg_trg_Getsuga_Tenshou, GetOwningPlayer(u), EVENT_PLAYER_UNIT_SPELL_EFFECT, null)
@@ -22,16 +20,15 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Rdw, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Kkg, u, EVENT_UNIT_SPELL_EFFECT)
     elseif (i == 2) then
-        set trg = CreateTrigger()
-        call TriggerAddAction(trg, function JitonRasengan_LevelUpAct)
-        call TriggerRegisterUnitEvent(trg, u, EVENT_UNIT_HERO_LEVEL)
-        set trg = null
+        set Naruto_Player = GetOwningPlayer(u)
+        set Naruto_CloneBuff = 'B00L'
+        call TriggerRegisterUnitEvent(Naruto_KagebunshinLearn, u, EVENT_UNIT_HERO_SKILL)
+        call TriggerRegisterUnitEvent(Naruto_KagebunshinLvlUp, u, EVENT_UNIT_HERO_LEVEL)
+        call TriggerRegisterUnitEvent(gg_trg_Kage_Bunshin, u, EVENT_UNIT_SPELL_EFFECT)
+        call TriggerRegisterUnitEvent(gg_trg_Jiton_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
+        call TriggerRegisterUnitEvent(gg_trg_Nine_Tails_Chakra, u, EVENT_UNIT_SPELL_EFFECT)
 
         set Naruto_RikenHash = InitHashtable()
-        call TriggerRegisterUnitEvent(gg_trg_Lrs, u, EVENT_UNIT_SPELL_EFFECT)
-        call TriggerRegisterUnitEvent(gg_trg_Jiton_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
-        call TriggerRegisterUnitEvent(gg_trg_Jiton_RasenganC, u, EVENT_UNIT_SPELL_CHANNEL)
-        call TriggerRegisterUnitEvent(gg_trg_Kage_Bushin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Biju_Rasenshuriken, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Cbr, u, EVENT_UNIT_SPELL_EFFECT)
     elseif (i == 3) then

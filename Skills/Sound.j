@@ -154,6 +154,7 @@ function Trig_Sound_Setup_Actions takes nothing returns nothing
     call DoSoundPreload(udg_soundPatch_Naruto + "\\Naruto\\KageBunshin.wav")
     call DoSoundPreload(udg_soundPatch_Naruto + "\\Naruto\\KageBunshinEff.wav")
     call DoSoundPreload(udg_soundPatch_Naruto + "\\Naruto\\Rasengan.wav")
+    call DoSoundPreload(udg_soundPatch_Naruto + "\\Naruto\\BaryonChakra.wav")
     call DoSoundPreload(udg_soundPatch_Naruto + "\\Naruto\\RasenganCharge.wav")
     call DoSoundPreload(udg_soundPatch_Naruto + "\\Neji\\128Palms.wav")
     call DoSoundPreload(udg_soundPatch_Naruto + "\\Neji\\Rotation.wav")

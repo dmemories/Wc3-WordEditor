@@ -44,8 +44,6 @@ call SetPlayerAbilityAvailable(p, 'A000', false)
 call UnitDamageTarget(self, picked, dmg, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
 call UnitDamageTarget(self, picked, dmg, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
 call UnitPureDamageTarget(self, picked, dmg)
-call DisplayText("XXXX", self, 0.023, false, 255, 255, 255, 255)
-call DisplayText("XXXX", self, 0.023, true, 220, 5, 5, 255)
 
 
 // Dummy & Order
@@ -115,6 +113,7 @@ GetOwningPlayer(whichUnit)
 local rect r = CreateRectXY(x, y, width, height)
 local rect x = RandomXInRect(rect)
 local rect x = GetRectCenterX(rect)
+call RemoveRect(r)
 
 // Timer
 local timer t = GetExpiredTimer()
@@ -144,6 +143,8 @@ call DestroyEffect(AddSpecialEffectTarget("XXXXX", self, "origin"))
 call DestroyEffect(AddSpecialEffect("XXXX", x, y))
 call DisplayTimedTextToForce(GetPlayersAll(), 0.01, "1")
 call DisplayText("XXXXXXXXXXX", self, 0.023, true, 255, 255, 255, 255)
+call DisplayText("XXXX", self, 0.023, true, 220, 5, 5, 255)
+if (IsUnitType(u, UNIT_TYPE_MECHANICAL)) then
 if (IsUnitType(u, UNIT_TYPE_HERO)) then
     call DisplayText(I2S(R2I(dmg)) + "!", picked, 0.027, true, 255, 0, 0, 255)
 endif

@@ -1,4 +1,51 @@
 //==========================================================================
+// GetWalkableRect         Lastest (13/09/22)
+//==========================================================================
+
+function CheckWalkableLoc takes real targetX, real targetY, real checkArea returns boolean
+    local boolean walkable = true
+    local integer i = 10
+    local real distRate = 360 / I2R(i)
+    local real angle
+
+    loop
+        exitwhen (walkable == false) or (i < 1)
+        set angle = distRate * I2R(i)
+        if (IsTerrainPathable(PolarX(targetX, checkArea, angle), PolarY(targetY, checkArea, angle), PATHING_TYPE_WALKABILITY)) then
+            set walkable = false
+        endif
+        set i = i - 1
+    endloop
+    return walkable
+endfunction
+
+function GetWalkableLoc takes real x, real y, real maxArea, real checkArea returns location
+    local rect r = CreateRectXY(x, y, maxArea, maxArea)
+    local integer i = 50
+
+    loop
+        exitwhen (i < 1)
+        set x = RandomXInRect(r)
+        set y = RandomYInRect(r)
+        if (CheckWalkableLoc(x, y, checkArea)) then
+            set i = 0
+        else
+            set x = 0
+            set y = 0
+            set i = i - 1
+        endif
+    endloop
+    call RemoveRect(r)
+    set r = null
+
+    if (x == 0) and (y == 0) then
+        return null
+    endif
+    return Location(x, y)
+endfunction
+
+
+//==========================================================================
 // SetEnabledAttack         Lastest (03/09/22)
 //==========================================================================
 
@@ -1114,32 +1161,21 @@ endfunction
 
 
 
-
 //==========================================================================
-// Destroy Tree           Lastest (10/04/60)
+// DestroyTreeXY             Lastest (10/12/60)  Updated (11/09/65)
 //==========================================================================
 
 function TreeKiller takes nothing returns nothing
-    call KillDestructable( GetEnumDestructable() )
+    local destructable d = GetEnumDestructable()
+    if (GetDestructableLife(d) > 0) then
+        call KillDestructable(d)
+    endif
+    set d = null
 endfunction
 
-
-
-
-//==========================================================================
-// DestroyTreeXY             Lastest (10/12/60)
-//==========================================================================
-
 function DestroyTreeXY takes real centerX, real centerY,real radius returns nothing
-    local rect r
-    local location loc = Location(centerX, centerY)
-
-    set bj_enumDestructableCenter = loc
-    set bj_enumDestructableRadius = radius
-    set r = Rect(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
-    call EnumDestructablesInRect(r, filterEnumDestructablesInCircleBJ, function TreeKiller)
-    call RemoveLocation(loc)
-    set loc = null
+    local rect r = Rect(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
+    call EnumDestructablesInRect(r, null, function TreeKiller)
     call RemoveRect(r)
     set r = null
 endfunction

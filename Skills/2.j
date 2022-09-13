@@ -91,7 +91,7 @@ scope JitonRasengan initializer Init
                 call SetUnitTimeScale(caster[casterIndex], 1.40)
                 call SetUnitAnimation(caster[casterIndex], "spell two")
                 call SetUnitFacing(caster[casterIndex], AngleBetweenXY(x[0], y[0], x[1], y[1]))
-                call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Charm\\CharmTarget.mdl", caster[casterIndex], "hand right"))
+                call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Human\\Invisibility\\InvisibilityTarget.mdl", caster[casterIndex], "hand right"))
             endif
             set casterIndex = casterIndex + 1
         endif
@@ -161,6 +161,7 @@ scope JitonRasengan initializer Init
                 call UnitMoveXY2(rasenDummy, x[1], y[1])
                 call UnitApplyTimedLife(CreateUnit(Naruto_Player, 'h017', x[0], y[0], pushFacing), 1112820806, 0.70)
                 set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'h008', x[1], y[1], pushFacing + 180)
+                call SetUnitVertexColor(bj_lastCreatedUnit, 0, 0, 0, 255)
                 call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 0.70)
                 call SetUnitTimeScale(bj_lastCreatedUnit, 1.40)
             endif
@@ -235,7 +236,6 @@ scope JitonRasengan initializer Init
                                 call IssueTargetOrder(bj_lastCreatedUnit, "thunderbolt", target)
                                 call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.00)
                                 set g = CreateGroupXY(x[0], y[0], garea, Naruto_Player)
-                                call GroupRemoveUnit(g, target)
                                 loop
                                     set picked = FirstOfGroup(g)
                                     exitwhen (picked == null)
