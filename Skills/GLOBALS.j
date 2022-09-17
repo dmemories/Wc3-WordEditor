@@ -95,6 +95,8 @@ globals
     trigger Naruto_KagebunshinLearn
     trigger Naruto_KagebunshinLvlUp
     integer Naruto_CloneBuff
+    trigger Naruto_RasenshurikenCast
+    trigger Naruto_RasenshurikenCastEnd
 
     // Pein
     integer Pein_BuffSoulDrain = 'B00A'

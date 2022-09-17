@@ -14,8 +14,10 @@ function Trig_Init_Actions takes nothing returns nothing
     call TriggerRegisterUnitEvent(Naruto_KagebunshinLvlUp, u, EVENT_UNIT_HERO_LEVEL)
     call TriggerRegisterUnitEvent(gg_trg_Kage_Bunshin, u, EVENT_UNIT_SPELL_EFFECT)
     call TriggerRegisterUnitEvent(gg_trg_Jiton_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
-    call TriggerRegisterUnitEvent(gg_trg_Nine_Tails_Chakra, u, EVENT_UNIT_SPELL_EFFECT)
-
+    call TriggerRegisterUnitEvent(gg_trg_Baryon_Chakra, u, EVENT_UNIT_SPELL_EFFECT)
+    call TriggerRegisterUnitEvent(Naruto_RasenshurikenCast, u, EVENT_UNIT_SPELL_CHANNEL)
+    call TriggerRegisterUnitEvent(Naruto_RasenshurikenCastEnd, u, EVENT_UNIT_SPELL_ENDCAST)
+    call TriggerRegisterUnitEvent(gg_trg_Lava_Rasenshuriken, u, EVENT_UNIT_SPELL_EFFECT)
 
     /* set Zabuza_BashSk = 'A003'
     set Zabuza_CleavingSk = 'A004'

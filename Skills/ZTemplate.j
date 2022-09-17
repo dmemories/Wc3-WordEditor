@@ -5,7 +5,7 @@ scope XXXXXXX initializer Init
         private unit self
         private unit target
         private real garea
-        private integer i
+        private integer n
         private integer stunSk = 0
     endglobals
 
@@ -21,8 +21,8 @@ scope XXXXXXX initializer Init
         local real speed
         local real facing
 
-        if (i > 0) then
-            set i = i - 1;
+        if (n > 0) then
+            set n = n - 1
             set x = GetUnitX(self)
             set y = GetUnitY(self)
             set facing = AngleBetweenXY(x, y, x, y)
@@ -45,6 +45,7 @@ scope XXXXXXX initializer Init
             call InitSkill()
         endif
 
+        set n = 100
         call TimerStart(CreateTimer(), 1.00, false, function ActL)
     endfunction
 
