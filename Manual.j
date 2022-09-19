@@ -45,21 +45,6 @@ call UnitDamageTarget(self, picked, dmg, true, false, ATTACK_TYPE_HERO, DAMAGE_T
 call UnitDamageTarget(self, picked, dmg, true, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, WEAPON_TYPE_WHOKNOWS)
 call UnitPureDamageTarget(self, picked, dmg)
 
-
-// Dummy & Order
-set bj_lastCreatedUnit = CreateUnit(p, 'u003', x[0], y[0], bj_UNIT_FACING)
-call UnitAddAbility(bj_lastCreatedUnit, 'A000')
-call UnitRemoveAbility(bj_lastCreatedUnit, 'Amov')
-call IssueTargetOrder(bj_lastCreatedUnit, "thunderbolt", picked)
-call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.00)
-"chainlightning", "thunderclap"
-call IssueImmediateOrder(bj_lastCreatedUnit, "stomp")
-call IssueImmediateOrderById(bj_lastCreatedUnit, 111111)
-call IssueTargetOrder(bj_lastCreatedUnit, "thunderbolt", u[1])
-call IssueTargetOrderById(bj_lastCreatedUnit, 111111, u[1])
-call IssuePointOrder(u, "silence", x, y)
-call IssuePointOrderById(u, 11111, x, y)
-
 // Unit Group
 call GroupAddUnit(whichGroup, whichUnit)
 local group g = CreateGroupXY2(x, y, garea, p, gcheck)
@@ -71,7 +56,6 @@ loop
 endloop
 call DestroyGroup(g)
 set g = null
-
 
 // Real
 local real xxx = GetUnitState(whichUnit, UNIT_STATE_LIFE)
@@ -93,7 +77,6 @@ local real xxx = GetOrderPointX()
 local real xxx = GetOrderPointY()
 local real xxx = GetEventDamage()
 
-
 // Integer
 local integer sk = GetLearnedSkill()
 local integer skLv = GetLearnedSkillLevel()
@@ -104,6 +87,20 @@ local integer n = GetUnitCurrentOrder(whichUnit) == OrderId("absorb")
 local integer n = GetUnitTypeId(whichUnit) == 'N01T'
 local integer n = GroupCountUnits(g)
 local integer n = GetHeroAgi(self, true)
+
+// Dummy & Order
+set bj_lastCreatedUnit = CreateUnit(p, 'u003', x[0], y[0], bj_UNIT_FACING)
+call UnitAddAbility(bj_lastCreatedUnit, 'A000')
+call UnitRemoveAbility(bj_lastCreatedUnit, 'Amov')
+call IssueTargetOrder(bj_lastCreatedUnit, "thunderbolt", picked)
+call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.00)
+"chainlightning", "thunderclap"
+call IssueImmediateOrder(bj_lastCreatedUnit, "stomp")
+call IssueImmediateOrderById(bj_lastCreatedUnit, 111111)
+call IssueTargetOrder(bj_lastCreatedUnit, "thunderbolt", u[1])
+call IssueTargetOrderById(bj_lastCreatedUnit, 111111, u[1])
+call IssuePointOrder(u, "silence", x, y)
+call IssuePointOrderById(u, 11111, x, y)
 
 // Player
 Player(PLAYER_NEUTRAL_AGGRESSIVE)

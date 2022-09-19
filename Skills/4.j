@@ -12,23 +12,29 @@
             private real spellX
             private real spellY
             private real reachRange
-            private boolean isRunning
+            private boolean finishCasting
             private integer n
-            private integer sizeMaxLoop = 0
+            private integer sizeMaxLoop
+
+            private unit array dummies
+            private real dmg
+            private integer skSlow
+            private integer maxDummy = 0
         endglobals
 
         private function InitSkill takes nothing returns nothing
             local real castingTime = 2.00
             local real diffSize = 2.00
 
-            call Log("Initial")
             set shuriken = null
             set garea = 600.00
             set shurikenSizeDelay = 0.05
             set sizeMaxLoop = R2I(castingTime / shurikenSizeDelay)
             set shurikenSizeRate = diffSize / I2R(sizeMaxLoop)
-            set shurikenSpeed = 90.00
+            set shurikenSpeed = 97.00
             set reachRange = shurikenSpeed + 10.00
+            set maxDummy = 3
+            set skSlow = 'A009'
         endfunction
 
         private function ClearShuriken takes nothing returns nothing
@@ -38,39 +44,109 @@
             endif
         endfunction
 
+        private function DmgL takes nothing returns nothing
+            local timer t = GetExpiredTimer()
+            local group g
+            local unit picked
+            local boolean modSlow
+
+            if (n > 0) then
+                set n = n - 1
+                set modSlow = ModuloInteger(n, 8) == 0
+                set g = CreateGroupXY(spellX, spellY, garea, Naruto_Player)
+                loop
+                    set picked = FirstOfGroup(g)
+                    exitwhen (picked == null)
+                    call GroupRemoveUnit(g, picked)
+                    call DestroyEffect(AddSpecialEffectTarget("Abilities\\Spells\\Other\\Stampede\\StampedeMissileDeath.mdl", picked, "origin"))
+                    call UnitDamageTarget(self, picked, dmg, true, false, ATTACK_TYPE_HERO, DAMAGE_TYPE_NORMAL, WEAPON_TYPE_WHOKNOWS)
+                    if (GetUnitState(picked, UNIT_STATE_LIFE) > 0) then
+                        if (modSlow) then
+                            set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'u003', spellX, spellY, bj_UNIT_FACING)
+                            call UnitAddAbility(bj_lastCreatedUnit, skSlow)
+                            call IssueTargetOrder(bj_lastCreatedUnit, "slow", picked)
+                            call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.00)
+                        endif
+                    else
+                        set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'h003', GetUnitX(picked), GetUnitY(picked), GetRandomReal(0, 360))
+                        call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 2.00)
+                    endif
+                endloop
+                call DestroyGroup(g)
+                set g = null
+                set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'h01B', spellX, spellY, GetRandomReal(0, 360))
+                call SetUnitVertexColor(bj_lastCreatedUnit, 255, 50, 0, 255)
+                call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 2.00)
+            else
+                call PauseTimer(t)
+                call DestroyTimer(t)
+                set self = null
+                set finishCasting = false
+
+                set n = maxDummy
+                loop
+                    exitwhen (n < 1)
+                    set n = n - 1
+                    call RemoveUnit(dummies[n])
+                    set dummies[n] = null
+                endloop
+                set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'h007', spellX, spellY, GetRandomReal(0, 360))
+                call SetUnitScale(bj_lastCreatedUnit, 3.00, 3.00, 3.00)
+                call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 8.00)
+            endif
+            set t = null
+        endfunction
+
         private function ActL takes nothing returns nothing
             local timer t = GetExpiredTimer()
-            local boolean isMoving = n > 0
-            local real x
-            local real y
+            local real x = GetUnitX(shuriken)
+            local real y = GetUnitY(shuriken)
+            local boolean isMoving = reachRange < DistanceBetweenXY(x, y, spellX, spellY)
             local real facing
 
-            if (isMoving) then
+            if (n > 0) and (isMoving) then
                 set n = n - 1
-                set x = GetUnitX(shuriken)
-                set y = GetUnitY(shuriken)
-            endif
-            call Log(R2S(DistanceBetweenXY(x, y, spellX, spellY)))
-            if (isMoving) and (reachRange < DistanceBetweenXY(x, y, spellX, spellY)) then
                 set facing = GetUnitFacing(shuriken)
                 set x = PolarX(x, shurikenSpeed, facing)
                 set y = PolarY(y, shurikenSpeed, facing)
                 call DestroyTreeXY(x, y, 190.00)
                 call UnitMoveXY2(shuriken, x, y)
+                if (ModuloInteger(n, 4) == 0) then
+                    set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'h019', x, y, facing)
+                    call SetUnitFly(bj_lastCreatedUnit)
+                    call SetUnitFlyHeight(bj_lastCreatedUnit, 250.00, 0.00)
+                    call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.60)
+                endif
             else
                 call PauseTimer(t)
                 call DestroyTimer(t)
                 call ClearShuriken()
-                set self = null
-                set isRunning = false
-                set n = 0
+
+                if (isMoving == false) then
+                    set spellX = x
+                    set spellY = y
+                    set n = maxDummy
+                    loop
+                        exitwhen (n < 1)
+                        set n = n - 1
+                        set dummies[n] = CreateUnit(Naruto_Player, 'h01M', x, y, GetRandomReal(0, 360))
+                        call SetUnitTimeScale(dummies[n], GetRandomReal(1.5,  2.8))
+                    endloop
+
+                    call DestroyTreeXY(x, y, garea)
+                    set n = 70
+                    call TimerStart(CreateTimer(), 0.08, true, function DmgL)
+                else
+                    set self = null
+                endif
             endif
             set t = null
         endfunction
 
         private function Act takes nothing returns nothing
             set self = GetTriggerUnit()
-            set isRunning = true
+            set finishCasting = true
+            set dmg = 50
             call SoundPatch_Spell(udg_soundPatch_Naruto + "\\Naruto\\BaryonChakra.wav", GetUnitX(self), GetUnitY(self))
             set n = 40
             call TimerStart(CreateTimer(), 0.04, true, function ActL)
@@ -78,7 +154,7 @@
 
         private function CastEndAct takes nothing returns nothing
             call SetUnitTimeScale(GetSpellAbilityUnit(), 1.00)
-            if (isRunning == false) then
+            if (finishCasting == false) then
                 call ClearShuriken()
                 set n = 0
             endif
@@ -91,11 +167,9 @@
                 set n = n - 1
                 set shurikenSize = shurikenSize + shurikenSizeRate
                 call SetUnitScale(shuriken, shurikenSize, shurikenSize, shurikenSize)
-                call Log(R2S(shurikenSize))
             else
                 call PauseTimer(t)
                 call DestroyTimer(t)
-                call Log("end")
             endif
             set t = null
         endfunction
@@ -107,12 +181,11 @@
 
             set spellX = GetSpellTargetX()
             set spellY = GetSpellTargetY()
-            if (sizeMaxLoop == 0) then
+            if (maxDummy == 0) then
                 call InitSkill()
             endif
-            call TriggerSleepAction(0.00)
             call SetUnitTimeScale(caster, 1.50)
-            call SetUnitAnimation(caster, "spell four")
+            call SetUnitAnimationAfter(caster, "spell four", 0.00)
 
             call ClearShuriken()
             set x = GetUnitX(caster)
@@ -126,11 +199,12 @@
 
             set bj_lastCreatedUnit = CreateUnit(Naruto_Player, 'h01B', x, y, GetRandomReal(0, 360))
             call SetUnitFly(bj_lastCreatedUnit)
-            call SetUnitFlyHeight(bj_lastCreatedUnit, 250.00, 0.00)
+            call SetUnitFlyHeight(bj_lastCreatedUnit, 280.00, 0.00)
             call UnitApplyTimedLife(bj_lastCreatedUnit, 1112820806, 1.50)
             call SetUnitScale(bj_lastCreatedUnit, 1.00, 1.00, 1.00)
+            call SetUnitVertexColor(bj_lastCreatedUnit, 255, 50, 0, 255)
 
-            set isRunning = false
+            set finishCasting = false
             set n = 100 + sizeMaxLoop
             call TimerStart(CreateTimer(), shurikenSizeDelay, true, function SizeL)
             set caster = null
