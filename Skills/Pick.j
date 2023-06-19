@@ -26,10 +26,14 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(Naruto_KagebunshinLvlUp, u, EVENT_UNIT_HERO_LEVEL)
         call TriggerRegisterUnitEvent(gg_trg_Kage_Bunshin, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Jiton_Rasengan, u, EVENT_UNIT_SPELL_EFFECT)
-        call TriggerRegisterUnitEvent(gg_trg_Nine_Tails_Chakra, u, EVENT_UNIT_SPELL_EFFECT)
+        call TriggerRegisterUnitEvent(gg_trg_Baryon_Chakra, u, EVENT_UNIT_SPELL_EFFECT)
 
         set Naruto_RikenHash = InitHashtable()
+        call TriggerRegisterUnitEvent(Naruto_ShurikenLearn, u, EVENT_UNIT_HERO_SKILL)
         call TriggerRegisterUnitEvent(gg_trg_Biju_Rasenshuriken, u, EVENT_UNIT_SPELL_EFFECT)
+        call TriggerRegisterUnitEvent(Naruto_RasenshurikenCast, u, EVENT_UNIT_SPELL_CHANNEL)
+        call TriggerRegisterUnitEvent(Naruto_RasenshurikenCastEnd, u, EVENT_UNIT_SPELL_ENDCAST)
+        call TriggerRegisterUnitEvent(gg_trg_Lava_Rasenshuriken, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Cbr, u, EVENT_UNIT_SPELL_EFFECT)
     elseif (i == 3) then
         set Rukia_BankaiHash = InitHashtable()
@@ -106,13 +110,13 @@ function Ability_AddEvent takes unit u, integer i returns nothing
         call TriggerRegisterUnitEvent(gg_trg_Ipf, u, EVENT_UNIT_SPELL_EFFECT)
     elseif (i == 11) then
         call SetAbilityAvailable('A07M', false)
-        call TriggerRegisterUnitEvent(gg_trg_Gef, u, EVENT_UNIT_SPELL_EFFECT)
+/*
         call TriggerRegisterUnitEvent(gg_trg_Eth, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Rti, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_Bkg, u, EVENT_UNIT_SPELL_EFFECT)
         call TriggerRegisterUnitEvent(gg_trg_BkgC, u, EVENT_UNIT_DEATH)
         call TriggerRegisterUnitEvent(gg_trg_Hns, u, EVENT_UNIT_SPELL_EFFECT)
-        call TriggerRegisterUnitEvent(gg_trg_Etp, u, EVENT_UNIT_SPELL_EFFECT)
+        call TriggerRegisterUnitEvent(gg_trg_Etp, u, EVENT_UNIT_SPELL_EFFECT)*/
     elseif (i == 12) then
         call SetAbilityAvailable('A0EF', false)
         call TriggerRegisterUnitEvent(gg_trg_Tcb, u, EVENT_UNIT_SPELL_EFFECT)

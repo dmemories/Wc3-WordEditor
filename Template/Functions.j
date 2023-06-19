@@ -1125,10 +1125,11 @@ endfunction
 // Set Unit Fly             Lastest (08/05/60)
 //==========================================================================
 
-function SetUnitFly takes unit u returns nothing 
-    call UnitAddAbility(u, udg_GlobalSkill[1])
-    call UnitMakeAbilityPermanent(u, true, udg_GlobalSkill[1])
-    call UnitRemoveAbility(u, udg_GlobalSkill[1])
+function SetUnitFly takes unit u returns nothing
+    if (UnitAddAbility(u, udg_GlobalSkill[1])) then
+        call UnitMakeAbilityPermanent(u, true, udg_GlobalSkill[1])
+        call UnitRemoveAbility(u, udg_GlobalSkill[1])
+    endif
 endfunction
 
 
@@ -1559,7 +1560,30 @@ function DisplayText takes string T, unit U, real Size, boolean Move, integer r,
     set tt=null
 endfunction
 
+function DisplayTextAtUnit takes string text, unit whichUnit returns nothing
+    local texttag tt = CreateTextTag()
+    call SetTextTagText(tt,T,0.023)
+    call SetTextTagPosUnit(tt,U,0)
+    call SetTextTagColor(tt,255,255,255,255)
+    call SetTextTagFadepoint(tt,2)
+    call SetTextTagPermanent(tt,false)
+    call SetTextTagLifespan(tt,2.00)
+    call SetTextTagVisibility(tt,true)
+    set tt=null
+endfunction
 
+function DisplayFloatTextAtUnit takes string text, unit whichUnit returns nothing
+    local texttag tt = CreateTextTag()
+    call SetTextTagText(tt,T,0.023)
+    call SetTextTagPosUnit(tt,U,0)
+    call SetTextTagColor(tt,255,255,255,255)
+    call SetTextTagVelocity(tt,0,0.055)
+    call SetTextTagFadepoint(tt,2)
+    call SetTextTagPermanent(tt,false)
+    call SetTextTagLifespan(tt,2.00)
+    call SetTextTagVisibility(tt,true)
+    set tt=null
+endfunction
 
 
 //==========================================================================
@@ -2446,4 +2470,59 @@ function CreateIllusion takes unit targetUnit, integer illusionSk, integer illus
     call DestroyTrigger(summonTrg)
     set summonTrg = null
     call FlushChildHashtable(CreateIllusionHash, trgId)
+endfunction
+
+
+//==========================================================================
+// Display Text As Critical          Lastest (31/10/62)
+//==========================================================================
+
+function DisplayCriticalText takes string str, unit u, integer r, integer g, integer b, integer a returns nothing
+    local texttag tt = CreateTextTag()
+    local real x = GetUnitX(u)
+    local real y = GetUnitY(u)
+    local real facing = 222.00
+
+    set x = PolarX(x, 20.00, facing)
+    set y = PolarY(y, 20.00, facing)
+    call SetTextTagText(tt, str, 0.024)
+    call SetTextTagPos(tt, x, y, 27)
+    call SetTextTagColor(tt, r, g, b, a)
+    call SetTextTagVelocity(tt, 0, 0.0395)
+    call SetTextTagFadepoint(tt, 3.00)
+    call SetTextTagPermanent(tt, false)
+    call SetTextTagLifespan(tt, 5.00)
+    call SetTextTagVisibility(tt, true)
+    set tt = null
+endfunction
+
+
+//==========================================================================
+// ResetUncastManaShield         Lastest (09/06/23)
+//==========================================================================
+
+function ResetUncastManaShieldEnd takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local integer tId = GetHandleId(t)
+    local unit caster = LoadUnitHandle(ManaShieldHash, tId, ManaShieldHashUnitIndex)
+
+    call PauseTimer(t)
+    call DestroyTimer(t)
+    set t = null
+
+    call SetAbilityAvailable(LoadInteger(ManaShieldHash, tId, ManaShieldHashSkIndex), true)
+    call UnitRemoveAbility(caster, 'BNms')
+    call FlushChildHashtable(ManaShieldHash, tId)
+    set caster = null
+endfunction
+
+function ResetUncastManaShield takes unit caster, integer skId returns nothing
+    local timer t = CreateTimer()
+    local integer tId = GetHandleId(t)
+
+    call SaveUnitHandle(ManaShieldHash, tId, ManaShieldHashUnitIndex, caster)
+    call SaveInteger(ManaShieldHash, tId, ManaShieldHashSkIndex, skId)
+    call SetAbilityAvailable(skId, false)
+    call TimerStart(t, 0, false, function ResetUncastManaShieldEnd)
+    set t = null
 endfunction

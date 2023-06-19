@@ -33,6 +33,7 @@ scope XXXXXXX initializer Init
         else
             call PauseTimer(t)
             call DestroyTimer(t)
+            set self = null
         endif
         set t = null
     endfunction

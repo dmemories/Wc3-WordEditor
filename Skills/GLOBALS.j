@@ -1,6 +1,8 @@
 globals
     rect MAP_RECT = null
     real UNIT_MOVE_AREA = 120.00
+    integer DEFAULT_TIMELIFE_BUFF = 1112820806
+    player NEUTRAL_AGGRESSIVE_PLAYER = Player(PLAYER_NEUTRAL_AGGRESSIVE)
 
     trigger Aizen_Hogyoku_Learn = CreateTrigger()
     trigger Akainu_MagmaFrenzyDmg = CreateTrigger()
@@ -19,7 +21,6 @@ globals
     trigger Sasuke_SusanooD = CreateTrigger()
     trigger Shunsui_Itokiribasami = CreateTrigger()
     trigger Soifon_SuzumebachiLearn = CreateTrigger()
-
 
     hashtable Hashirama_RashomonTable
     hashtable Ichigo_Hash
@@ -62,6 +63,10 @@ globals
     integer PushTargetSpeedDecIndex = 3
     integer PushTargetMaxMoveIndex = 4
 
+    hashtable ManaShieldHash = InitHashtable()
+    integer ManaShieldHashUnitIndex = 0
+    integer ManaShieldHashSkIndex = 1
+
     integer DivineItemId = 'I077'
 
 //======================================================================================
@@ -97,6 +102,12 @@ globals
     integer Naruto_CloneBuff
     trigger Naruto_RasenshurikenCast
     trigger Naruto_RasenshurikenCastEnd
+    trigger Naruto_ShurikenLearn
+
+    // Neji
+    trigger Neji_HyugaClanTechAtkTrg
+    trigger Neji_OrderTrg
+    unit Neji_Unit
 
     // Pein
     integer Pein_BuffSoulDrain = 'B00A'
