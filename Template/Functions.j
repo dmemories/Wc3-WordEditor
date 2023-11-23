@@ -1,4 +1,64 @@
 //==========================================================================
+// GetWalkableRect         Lastest (13/09/22)
+//==========================================================================
+
+function CheckWalkableLoc takes real targetX, real targetY, real checkArea returns boolean
+    local boolean walkable = true
+    local integer i = 10
+    local real distRate = 360 / I2R(i)
+    local real angle
+
+    loop
+        exitwhen (walkable == false) or (i < 1)
+        set angle = distRate * I2R(i)
+        if (IsTerrainPathable(PolarX(targetX, checkArea, angle), PolarY(targetY, checkArea, angle), PATHING_TYPE_WALKABILITY)) then
+            set walkable = false
+        endif
+        set i = i - 1
+    endloop
+    return walkable
+endfunction
+
+function GetWalkableLoc takes real x, real y, real maxArea, real checkArea returns location
+    local rect r = CreateRectXY(x, y, maxArea, maxArea)
+    local integer i = 50
+
+    loop
+        exitwhen (i < 1)
+        set x = RandomXInRect(r)
+        set y = RandomYInRect(r)
+        if (CheckWalkableLoc(x, y, checkArea)) then
+            set i = 0
+        else
+            set x = 0
+            set y = 0
+            set i = i - 1
+        endif
+    endloop
+    call RemoveRect(r)
+    set r = null
+
+    if (x == 0) and (y == 0) then
+        return null
+    endif
+    return Location(x, y)
+endfunction
+
+
+//==========================================================================
+// SetEnabledAttack         Lastest (03/09/22)
+//==========================================================================
+
+function SetEnabledAttack takes unit whichUnit, boolean attackable returns nothing
+    if (attackable) then
+        call UnitRemoveAbility(whichUnit, 'Abun')
+    else
+        call UnitAddAbility(whichUnit, 'Abun')
+    endif
+endfunction
+
+
+//==========================================================================
 // CreateGroupAllyXY         Lastest (12/12/21)
 //==========================================================================
 
@@ -1065,10 +1125,11 @@ endfunction
 // Set Unit Fly             Lastest (08/05/60)
 //==========================================================================
 
-function SetUnitFly takes unit u returns nothing 
-    call UnitAddAbility(u, udg_GlobalSkill[1])
-    call UnitMakeAbilityPermanent(u, true, udg_GlobalSkill[1])
-    call UnitRemoveAbility(u, udg_GlobalSkill[1])
+function SetUnitFly takes unit u returns nothing
+    if (UnitAddAbility(u, udg_GlobalSkill[1])) then
+        call UnitMakeAbilityPermanent(u, true, udg_GlobalSkill[1])
+        call UnitRemoveAbility(u, udg_GlobalSkill[1])
+    endif
 endfunction
 
 
@@ -1101,32 +1162,21 @@ endfunction
 
 
 
-
 //==========================================================================
-// Destroy Tree           Lastest (10/04/60)
+// DestroyTreeXY             Lastest (10/12/60)  Updated (11/09/65)
 //==========================================================================
 
 function TreeKiller takes nothing returns nothing
-    call KillDestructable( GetEnumDestructable() )
+    local destructable d = GetEnumDestructable()
+    if (GetDestructableLife(d) > 0) then
+        call KillDestructable(d)
+    endif
+    set d = null
 endfunction
 
-
-
-
-//==========================================================================
-// DestroyTreeXY             Lastest (10/12/60)
-//==========================================================================
-
 function DestroyTreeXY takes real centerX, real centerY,real radius returns nothing
-    local rect r
-    local location loc = Location(centerX, centerY)
-
-    set bj_enumDestructableCenter = loc
-    set bj_enumDestructableRadius = radius
-    set r = Rect(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
-    call EnumDestructablesInRect(r, filterEnumDestructablesInCircleBJ, function TreeKiller)
-    call RemoveLocation(loc)
-    set loc = null
+    local rect r = Rect(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
+    call EnumDestructablesInRect(r, null, function TreeKiller)
     call RemoveRect(r)
     set r = null
 endfunction
@@ -1510,7 +1560,30 @@ function DisplayText takes string T, unit U, real Size, boolean Move, integer r,
     set tt=null
 endfunction
 
+function DisplayTextAtUnit takes string text, unit whichUnit returns nothing
+    local texttag tt = CreateTextTag()
+    call SetTextTagText(tt,T,0.023)
+    call SetTextTagPosUnit(tt,U,0)
+    call SetTextTagColor(tt,255,255,255,255)
+    call SetTextTagFadepoint(tt,2)
+    call SetTextTagPermanent(tt,false)
+    call SetTextTagLifespan(tt,2.00)
+    call SetTextTagVisibility(tt,true)
+    set tt=null
+endfunction
 
+function DisplayFloatTextAtUnit takes string text, unit whichUnit returns nothing
+    local texttag tt = CreateTextTag()
+    call SetTextTagText(tt,T,0.023)
+    call SetTextTagPosUnit(tt,U,0)
+    call SetTextTagColor(tt,255,255,255,255)
+    call SetTextTagVelocity(tt,0,0.055)
+    call SetTextTagFadepoint(tt,2)
+    call SetTextTagPermanent(tt,false)
+    call SetTextTagLifespan(tt,2.00)
+    call SetTextTagVisibility(tt,true)
+    set tt=null
+endfunction
 
 
 //==========================================================================
@@ -2397,4 +2470,59 @@ function CreateIllusion takes unit targetUnit, integer illusionSk, integer illus
     call DestroyTrigger(summonTrg)
     set summonTrg = null
     call FlushChildHashtable(CreateIllusionHash, trgId)
+endfunction
+
+
+//==========================================================================
+// Display Text As Critical          Lastest (31/10/62)
+//==========================================================================
+
+function DisplayCriticalText takes string str, unit u, integer r, integer g, integer b, integer a returns nothing
+    local texttag tt = CreateTextTag()
+    local real x = GetUnitX(u)
+    local real y = GetUnitY(u)
+    local real facing = 222.00
+
+    set x = PolarX(x, 20.00, facing)
+    set y = PolarY(y, 20.00, facing)
+    call SetTextTagText(tt, str, 0.024)
+    call SetTextTagPos(tt, x, y, 27)
+    call SetTextTagColor(tt, r, g, b, a)
+    call SetTextTagVelocity(tt, 0, 0.0395)
+    call SetTextTagFadepoint(tt, 3.00)
+    call SetTextTagPermanent(tt, false)
+    call SetTextTagLifespan(tt, 5.00)
+    call SetTextTagVisibility(tt, true)
+    set tt = null
+endfunction
+
+
+//==========================================================================
+// ResetUncastManaShield         Lastest (09/06/23)
+//==========================================================================
+
+function ResetUncastManaShieldEnd takes nothing returns nothing
+    local timer t = GetExpiredTimer()
+    local integer tId = GetHandleId(t)
+    local unit caster = LoadUnitHandle(ManaShieldHash, tId, ManaShieldHashUnitIndex)
+
+    call PauseTimer(t)
+    call DestroyTimer(t)
+    set t = null
+
+    call SetAbilityAvailable(LoadInteger(ManaShieldHash, tId, ManaShieldHashSkIndex), true)
+    call UnitRemoveAbility(caster, 'BNms')
+    call FlushChildHashtable(ManaShieldHash, tId)
+    set caster = null
+endfunction
+
+function ResetUncastManaShield takes unit caster, integer skId returns nothing
+    local timer t = CreateTimer()
+    local integer tId = GetHandleId(t)
+
+    call SaveUnitHandle(ManaShieldHash, tId, ManaShieldHashUnitIndex, caster)
+    call SaveInteger(ManaShieldHash, tId, ManaShieldHashSkIndex, skId)
+    call SetAbilityAvailable(skId, false)
+    call TimerStart(t, 0, false, function ResetUncastManaShieldEnd)
+    set t = null
 endfunction
