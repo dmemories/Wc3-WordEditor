@@ -10,6 +10,7 @@ function Trig_Init_Actions takes nothing returns nothing
 // -----------------------------------------
 
     set Neji_Unit = u
+    set Neji_ByakuganBuff = 'B004'
     call TriggerRegisterUnitEvent(Neji_OrderTrg, u, EVENT_UNIT_ISSUED_ORDER)
     call TriggerRegisterUnitEvent(Neji_OrderTrg, u, EVENT_UNIT_ISSUED_POINT_ORDER)
     call TriggerRegisterUnitEvent(Neji_OrderTrg, u, EVENT_UNIT_ISSUED_TARGET_ORDER)
@@ -17,6 +18,7 @@ function Trig_Init_Actions takes nothing returns nothing
     call TriggerRegisterUnitEvent(gg_trg_Hyuga_Clan_Tech, u, EVENT_UNIT_SPELL_EFFECT)
     call TriggerRegisterUnitEvent(gg_trg_Hakke_Hasangeki, u, EVENT_UNIT_SPELL_EFFECT)
     call TriggerRegisterUnitEvent(gg_trg_Hakkesho_Kaiten, u, EVENT_UNIT_SPELL_EFFECT)
+    call TriggerRegisterUnitEvent(gg_trg_Byakugan, u, EVENT_UNIT_SPELL_EFFECT)
 
 /*     call TriggerRegisterUnitEvent(Naruto_KagebunshinLearn, u, EVENT_UNIT_HERO_SKILL)
     call TriggerRegisterUnitEvent(Naruto_KagebunshinLvlUp, u, EVENT_UNIT_HERO_LEVEL)

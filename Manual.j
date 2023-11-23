@@ -98,6 +98,7 @@ set bj_lastCreatedUnit = CreateUnit(p, 'u003', x[0], y[0], bj_UNIT_FACING)
 call UnitAddAbility(bj_lastCreatedUnit, 'A000')
 call UnitRemoveAbility(bj_lastCreatedUnit, 'Amov')
 call IssueTargetOrder(bj_lastCreatedUnit, "thunderbolt", picked)
+call SetUnitAbilityLevel(self, unholySkId, 2)
 call UnitApplyTimedLife(bj_lastCreatedUnit, DEFAULT_TIMELIFE_BUFF, 1.00)
 "chainlightning", "thunderclap"
 call IssueImmediateOrder(bj_lastCreatedUnit, "stomp")

@@ -8,6 +8,8 @@ scope HyugaClanTech initializer Init
         private integer atkedIdHashIndex
         private integer minStack
         private integer maxStack
+        private integer bashSk
+        private real maxDmgHpPercent
         private real atkedDelay
         private real burnAmount
         private boolean isAttacking
@@ -22,6 +24,8 @@ scope HyugaClanTech initializer Init
             set atkedDelay = 1.00
             set minStack = 0
             set maxStack = minStack + 2
+            set bashSk = 'A00A'
+            set maxDmgHpPercent = 3.00
             set burnAmount = 60.00
         endif
     endfunction
@@ -62,15 +66,50 @@ scope HyugaClanTech initializer Init
     private function DmgCond takes nothing returns boolean
         local unit atker = GetEventDamageSource()
         local unit atked
+        local real dmg
+        local real atkedMp
+        local real atkedMaxMp
+        local real atkedHp
+        local real mpPercent
+        local real maxBonusDmg
+        local real bonusDmg
 
         if (GetUnitAbilityLevel(atker, skId) > 0) then
             if (atker == Neji_Unit) and (isAttacking == false) then
+                set atker = null
                 return false
             endif
+
             set atked = GetTriggerUnit()
+            set atkedMp = GetUnitState(atked, UNIT_STATE_MANA)
+            set atkedHp = GetUnitState(atked, UNIT_STATE_LIFE)
             call DestroyEffect(AddSpecialEffectTarget("war3mapImported\\NejiAttack.mdl", atked, "origin"))
-            call CreateBurnTxt(I2S(GetRandomInt(1, 100)) + "!", atked)
-            call SetUnitState(atked, UNIT_STATE_MANA, RMaxBJ(0, GetUnitState(atked, UNIT_STATE_MANA) - burnAmount))
+            call SetUnitState(atked, UNIT_STATE_MANA, RMaxBJ(0, atkedMp - burnAmount))
+            if (GetUnitAbilityLevel(atker, Neji_ByakuganBuff) > 0) then
+                set dmg = GetEventDamage()
+                set atkedMaxMp = GetUnitState(atked, UNIT_STATE_MAX_MANA)
+                if (atkedMaxMp == 0) then
+                    set atkedMaxMp = 1
+                endif
+
+                set mpPercent = (atkedMaxMp - atkedMp) / atkedMaxMp
+                set maxBonusDmg = maxDmgHpPercent / 100 * GetUnitState(atked, UNIT_STATE_MAX_LIFE)
+                set bonusDmg = RMinBJ(maxBonusDmg, dmg * RMaxBJ(0.001, mpPercent))
+                call CreateBurnTxt(I2S(R2I(bonusDmg)) + "!", atked)
+                if (atker == Neji_Unit) then
+                    if (mpPercent >= 0.8) then
+                        call UnitAddAbility(atker, bashSk)
+                    else
+                        call UnitRemoveAbility(atker, bashSk)
+                    endif
+                endif
+
+                if (atkedHp > bonusDmg) then
+                    call SetUnitState(atked, UNIT_STATE_LIFE, (atkedHp - bonusDmg))
+                else
+                    call SetUnitState(atked, UNIT_STATE_LIFE, 1.00)
+                endif
+            endif
             set atked = null
         endif
         set atker = null
@@ -141,6 +180,7 @@ scope HyugaClanTech initializer Init
     private function OrderAct takes nothing returns nothing
         if (851983 != GetIssuedOrderId()) then
             set isAttacking = false
+            call UnitRemoveAbility(GetOrderedUnit(), bashSk)
         endif
     endfunction
 

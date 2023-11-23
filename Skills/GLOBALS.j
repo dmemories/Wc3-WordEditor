@@ -108,6 +108,7 @@ globals
     trigger Neji_HyugaClanTechAtkTrg
     trigger Neji_OrderTrg
     unit Neji_Unit
+    integer Neji_ByakuganBuff
 
     // Pein
     integer Pein_BuffSoulDrain = 'B00A'
