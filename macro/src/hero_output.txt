@@ -1,0 +1,7 @@
+globals
+        integer HeroKurosakiIchigo = 'H001'
+        integer HeroGGG = 'H002'
+endglobals
+
+//! external ObjectMerger w3u H000 H001 unam "Dual Zangetsu" upro "Kurosaki Ichigo" uhab "" uabi "" ubpx 0 ubpy 0 uico "ReplaceableTextures\CommandButtons\BTNYhwach.blp" umdl "Button.mdx" usca 1 ua1c 1.5 ua1b 60 ua1r 120 ua1w 3 usnd "GryphonRider" ustr 29.75 ustp 3.75 uagi 31 uagp 3 uint 29.25 uinp 2.25 ussi "ReplaceableTextures\CommandButtons\BTNYhwach.blp" umvs 300 upra 0 utip "Kurosaki Ichigo" utub "|c00ea1d2fStrength -|r 29.75 + 3.75|n|c003a59e5Agility -|r 31 + 3|n|c003a59e5Intelligence -|r 29.25 + 2.25|n|n|cffffcc00Main Ability:|r|nGetsuga Tenshou|nQuincy Power|n|n|cffffcc00Default Ability:|r|nShunpo|n|nAttack range of 120|nMovement speed of 300"
+//! external ObjectMerger w3u H000 H002 unam "Rifle Man" upro "GGG" uhab "" uabi "" ubpx 0 ubpy 0 uico "ReplaceableTextures\CommandButtons\BTNRifleman.blp" umdl "Button.mdx" usca 1 ua1c 1.5 ua1b 60 ua1r 120 ua1w 3 usnd "GryphonRider" ustr 27 ustp 4 uagi 27.75 uagp 2 uint 35.25 uinp 4 ussi "ReplaceableTextures\CommandButtons\BTNRifleman.blp" umvs 305 upra 2 utip "GGG" utub "|c003a59e5Strength -|r 27 + 4|n|c003a59e5Agility -|r 27.75 + 2|n|c00ea1d2fIntelligence -|r 35.25 + 4|n|n|cffffcc00Main Ability:|r|nA|nB|n|n|cffffcc00Default Ability:|r|nShunpo|n|nAttack range of 120|nMovement speed of 305"

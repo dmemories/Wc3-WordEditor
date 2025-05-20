@@ -11,4 +11,9 @@ export default class Constant {
     public static readonly AGILITY_PERLV_RAW = "uagp";
     public static readonly START_INTELLIGENCE_RAW = "uint";
     public static readonly INTELLIGENCE_PERLV_RAW = "uinp";
+    public static readonly ICON_GAME_RAW = "uico";
+    public static readonly ICON_SCREEN_RAW = "ussi";
+
+    public static readonly MAIN_ABT_TXT = "!MAIN_ABT_TXT";
+    public static readonly DEFAULT_ABT_TXT = "!DEFAULT_ABT_TXT";
 }

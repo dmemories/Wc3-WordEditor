@@ -1,3 +1,3 @@
 @echo off
 cd /d "%~dp0"
-ts-node hero_status.ts | clip
+ts-node src/hero_status.ts
