@@ -34,13 +34,13 @@ const RAW_BLEACH_START = "H001";
 const RAW_ONEPIECE_START = "H056";
 const RAW_NARUTO_START = "H0AB";
 
-const HERO_MOVE_SPEED = 295;
+const HERO_MOVE_SPEED = 300;
 const RANDOM_MOVE_SPEED_RANGE = 15;
 const BONUS_MOVE_SPEED_AGI = 15;
 const BONUS_MOVE_SPEED_MIN = 5;
 
 
-let vars = "", macros = "";
+let macros = "", heroVars = "";
 
 for (let i = 0, len = bleach_hero.length; i < len; i++) {
 
@@ -72,18 +72,23 @@ for (let i = 0, len = bleach_hero.length; i < len; i++) {
     }
 
     macros += ` ${Constant.TOOTIP_NAME_RAW} "${heroName}" ${getExtendedTxt(bleach_hero[i])}\n`;
-    vars += `        integer Hero${heroName.replaceAll(" ", "")} = '${rawCode}'`;
+    heroVars += `        call Hero.create('${rawCode}', "${heroIcon.replaceAll("\\", "\\\\")}", Condition(function ${heroName.replaceAll(" ", "")}_Setup))`;
+
 
     if (i == len - 1) continue;
-    vars += "\n";
+    heroVars += "\n";
 }
 
 
 writeFileSync(
   'hero_output.txt',
-  `globals
-${vars}
-endglobals
+  `scope HeroMacro initializer Init
+    
+    private function Init takes nothing returns nothing
+${heroVars}
+    endfunction
+
+endscope
 
 ${macros}`
 );
